@@ -9,5 +9,5 @@ branch `gh-pages`.
   `website` in `.github/workflows/build.yml`) after every green build.
   Edit the source, not this repository.
 
-Live: https://fdietze.github.io/quine-website/ ·
-[privacy policy](https://fdietze.github.io/quine-website/privacy.html)
+Live: https://quine.felx.me/ ·
+[privacy policy](https://quine.felx.me/privacy.html)
