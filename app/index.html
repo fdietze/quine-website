@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Quine</title>
+    <link rel="stylesheet" href="app/style.css" />
+  </head>
+  <body>
+    <header class="bar">
+      <h1>Quine</h1>
+      <a href="settings.html" id="settings-link">Settings</a>
+    </header>
+    <main class="launcher">
+      <form class="new" id="new-world">
+        <input id="new-name" name="name" placeholder="Name of a new app" maxlength="60" required />
+        <button class="primary" type="submit">Create</button>
+      </form>
+      <p class="error" id="error" hidden></p>
+      <p class="notice" id="empty" hidden>No apps yet. Name one above to begin.</p>
+      <ul id="worlds" aria-label="apps"></ul>
+      <p class="notice">
+        Apps live in this browser's private storage for this site, and nowhere
+        else. Export saves an app's file, which Quine on the desktop and on Android
+        opens too.
+      </p>
+    </main>
+    <script type="module" src="app/launcher.mjs"></script>
+  </body>
+</html>

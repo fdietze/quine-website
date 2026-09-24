@@ -1,0 +1,86 @@
+/* ONE STYLESHEET for the whole shell. Plain CSS and the system font stack:
+   the chrome is the host's, drawn in the platform's own vocabulary, while the
+   world draws itself (with the pinned font) inside its canvas. */
+:root {
+  color-scheme: dark;
+  --bg: #16181d;
+  --panel: #1f232b;
+  --line: #2d333d;
+  --text: #d6dbe3;
+  --muted: #8b95a3;
+  --accent: #5b9dff;
+  --danger: #e5534b;
+  font: 15px/1.4 system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; background: var(--bg); color: var(--text); }
+button, input, select, textarea { font: inherit; color: inherit; }
+button {
+  background: var(--panel); border: 1px solid var(--line); border-radius: 6px;
+  padding: 6px 12px; cursor: pointer;
+}
+button:hover { border-color: var(--accent); }
+button.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+button.danger { color: var(--danger); }
+a { color: var(--accent); }
+
+header.bar {
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 12px; border-bottom: 1px solid var(--line); background: var(--panel);
+}
+header.bar h1 { font-size: 16px; margin: 0; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* THE LAUNCHER: a grid of world tiles, one column on a phone. */
+main.launcher { padding: 16px; max-width: 960px; margin: 0 auto; }
+#worlds { list-style: none; padding: 0; margin: 16px 0; display: grid; gap: 12px;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
+.tile { background: var(--panel); border: 1px solid var(--line); border-radius: 8px;
+  display: flex; flex-direction: column; }
+.tile a.open { flex: 1; padding: 16px; color: var(--text); text-decoration: none; font-weight: 600;
+  overflow-wrap: anywhere; }
+.tile a.open:hover { color: var(--accent); }
+.tile .actions { display: flex; gap: 6px; padding: 8px; border-top: 1px solid var(--line); }
+.notice { color: var(--muted); }
+.error { color: var(--danger); white-space: pre-wrap; }
+/* The world view's notices sit on the page edge, outside any padded main. */
+body.world > .error, body.world > .notice { margin: 8px 12px; }
+form.new { display: flex; gap: 8px; flex-wrap: wrap; }
+form.new input { flex: 1; min-width: 160px; background: var(--panel); border: 1px solid var(--line);
+  border-radius: 6px; padding: 6px 10px; }
+
+/* THE WORLD VIEW: full screen, the canvas takes whatever the chrome leaves. */
+body.world { display: flex; flex-direction: column; height: 100dvh; overflow: hidden; }
+#picture { flex: 1; min-height: 0; position: relative; }
+#picture canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block;
+  outline: none; touch-action: none; }
+
+/* THE CONVERSATION, STATUS AND INPUT: the page's own chrome below the picture.
+   The conversation is bounded so the picture always keeps most of the screen;
+   collapsing it hands that space back to the picture. */
+#conversation { border-top: 1px solid var(--line); background: var(--panel); }
+#conversation-toggle { border: 0; border-radius: 0; width: 100%; text-align: left;
+  padding: 4px 12px; color: var(--muted); background: none; }
+#conversation-lines { max-height: 35dvh; overflow-y: auto; padding: 0 12px 6px; }
+#conversation-lines .line { white-space: pre-wrap; overflow-wrap: anywhere; margin: 2px 0; }
+#conversation-lines .line[data-kind=user] { color: var(--accent); }
+#conversation-lines .line[data-kind=thinking],
+#conversation-lines .line[data-kind=tool-call],
+#conversation-lines .line[data-kind=tool-result],
+#conversation-lines .line[data-kind=note] { color: var(--muted); font-size: 13px; }
+#conversation-lines .line[data-kind=tool-call],
+#conversation-lines .line[data-kind=tool-result] { font-family: ui-monospace, monospace; }
+#conversation-lines .line[data-kind=error] { color: var(--danger); }
+#status { display: flex; gap: 12px; margin: 0; padding: 2px 12px; font-size: 12px;
+  color: var(--muted); border-top: 1px solid var(--line); white-space: nowrap; overflow: hidden; }
+#status-line { flex: 1; overflow: hidden; text-overflow: ellipsis; }
+form#chat { display: flex; gap: 8px; padding: 8px 12px; border-top: 1px solid var(--line); }
+#chat-input { flex: 1; resize: none; background: var(--panel); border: 1px solid var(--line);
+  border-radius: 6px; padding: 6px 10px; }
+
+/* SETTINGS */
+main.settings { padding: 16px; max-width: 640px; margin: 0 auto; }
+main.settings section { margin-bottom: 20px; }
+main.settings h2 { font-size: 15px; margin: 0 0 6px; }
+main.settings input, main.settings select { display: block; width: 100%; margin: 4px 0;
+  background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 6px 10px; }
+main.settings label { display: block; margin: 8px 0; color: var(--muted); }

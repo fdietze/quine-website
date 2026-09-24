@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Settings · Quine</title>
+    <link rel="stylesheet" href="app/style.css" />
+  </head>
+  <body>
+    <header class="bar">
+      <a href="index.html" id="back">← Apps</a>
+      <h1>Settings</h1>
+    </header>
+    <main class="settings">
+      <form id="settings" autocomplete="off">
+        <section>
+          <h2>OpenRouter API key</h2>
+          <p class="notice" id="key-state"></p>
+          <input id="openrouter-key" type="password" autocomplete="off" spellcheck="false"
+                 placeholder="sk-or-…" aria-label="OpenRouter API key" />
+          <button type="button" id="remove-key" class="danger" hidden>Remove key</button>
+          <p class="notice">
+            Stored in this browser's local storage for this site, unencrypted: anyone with
+            access to this browser profile can read it. It is sent to OpenRouter and to
+            nothing else, and never enters an app or its file.
+          </p>
+        </section>
+        <section>
+          <h2>Resident</h2>
+          <label>Model <input id="model" spellcheck="false" /></label>
+          <label>Effort <select id="effort"></select></label>
+          <p class="notice">Blank model and "default" effort follow the app's defaults.</p>
+        </section>
+        <button class="primary" id="save" type="submit">Save</button>
+        <p class="error" id="error" hidden></p>
+      </form>
+    </main>
+    <script type="module" src="app/settings.mjs"></script>
+  </body>
+</html>
