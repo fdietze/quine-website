@@ -1,18 +1,13 @@
 # quine-website
 
-Minimal static marketing + legal site for the **quine** Android app, published
-via GitHub Pages.
+The public deployment target of quine's website, served by GitHub Pages from
+branch `gh-pages`.
 
-- `index.html` — landing page
-- `privacy.html` — privacy policy (required by Google Play)
+- Source: `website/` in fdietze/quine (landing page, privacy policy), plus the
+  Browser shell under `app/` (`nix build .#website`).
+- `gh-pages` holds exactly one commit and is overwritten by quine's CI (job
+  `website` in `.github/workflows/build.yml`) after every green build.
+  Edit the source, not this repository.
 
-Plain static HTML, no build step, no JavaScript, no external assets, no
-trackers.
-
-## Publishing
-
-GitHub Pages, "Deploy from a branch": branch `main`, folder `/` (root).
-Live at:
-
-- https://fdietze.github.io/quine-website/
-- https://fdietze.github.io/quine-website/privacy.html
+Live: https://fdietze.github.io/quine-website/ ·
+[privacy policy](https://fdietze.github.io/quine-website/privacy.html)
