@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'wasm-unsafe-eval'; worker-src 'self' blob:; style-src 'self'; font-src 'self'; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https: http://localhost:* http://127.0.0.1:*; base-uri 'none'; form-action 'none'; object-src 'none'; manifest-src 'self'" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Settings · Quine</title>
+    <link rel="stylesheet" href="app/style.css" />
+    <!-- The installable app (app/installed-app.mjs); the icons are rendered
+         from branding/app-icon.svg (nix/app-icon.nix). -->
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="icon" href="generated/icons/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="generated/icons/favicon.ico" sizes="16x16 32x32 48x48" />
+    <link rel="apple-touch-icon" href="generated/icons/apple-touch-icon.png" />
+  </head>
+  <body>
+    <header class="bar">
+      <a href="index.html" id="back">← Apps</a>
+      <h1>Settings</h1>
+    </header>
+    <main class="settings">
+      <form id="settings" autocomplete="off">
+        <section>
+          <h2>AI</h2>
+          <h3>OpenRouter API key</h3>
+          <p class="notice" id="key-state"></p>
+          <input id="openrouter-key" type="password" autocomplete="off" spellcheck="false"
+                 placeholder="sk-or-…" aria-label="OpenRouter API key" />
+          <button type="button" id="remove-key" class="danger" hidden>Remove key</button>
+          <p class="notice">
+            Stored in this browser's local storage for this site, unencrypted: anyone with
+            access to this browser profile can read it. It is sent to OpenRouter and to
+            nothing else, and never enters an app or its file.
+          </p>
+          <label>Model <input id="model" spellcheck="false" /></label>
+          <label>Reasoning effort <select id="effort"></select></label>
+          <label>Image model <input id="image-model" spellcheck="false" /></label>
+          <p class="notice">Blank models and "default" effort follow the defaults.</p>
+        </section>
+        <section>
+          <h2>App permissions</h2>
+          <label class="switch"><input id="permission-web" type="checkbox" role="switch" />
+            Apps may search and load web pages</label>
+          <label class="switch"><input id="permission-sound" type="checkbox" role="switch" />
+            Apps may play sound</label>
+          <label class="switch"><input id="permission-camera" type="checkbox" role="switch" />
+            Apps may take camera photos</label>
+          <label class="switch"><input id="permission-microphone" type="checkbox" role="switch" />
+            Apps may record microphone audio</label>
+          <p class="notice">Applies to apps opened from now on.</p>
+        </section>
+        <section>
+          <h2>About</h2>
+          <!-- THE BUILD ROW: seven taps open Developer, a long press (or a
+               right click) closes it again (app/developer-door.mjs). -->
+          <button type="button" id="build-row" class="build-row">
+            <span>Build</span>
+            <span id="about" class="notice"></span>
+          </button>
+          <p class="notice" id="developer-state" role="status"></p>
+        </section>
+        <section id="developer" hidden>
+          <h2>Developer</h2>
+          <label class="switch"><input id="show-tool-calls" type="checkbox" role="switch" />
+            Show tool calls</label>
+          <label class="switch"><input id="show-status-line" type="checkbox" role="switch" />
+            Show status line</label>
+        </section>
+        <div class="save-row">
+          <button class="primary" id="save" type="submit">Save</button>
+          <span class="notice" id="save-state" role="status"></span>
+        </div>
+        <p class="error" id="error" hidden></p>
+      </form>
+    </main>
+    <script type="module" src="app/settings.mjs"></script>
+  </body>
+</html>
