@@ -1,0 +1,193 @@
+/* ONE STYLESHEET for the whole shell. Plain CSS and the system font stack:
+   the chrome is the host's, drawn in the platform's own vocabulary, while the
+   world draws itself (with the pinned font) inside its canvas. */
+:root {
+  color-scheme: dark;
+  --bg: #16181d;
+  --panel: #1f232b;
+  --line: #2d333d;
+  --text: #d6dbe3;
+  --muted: #8b95a3;
+  --accent: #5b9dff;
+  --danger: #e5534b;
+  /* ONE TEXT STACK for the chrome and the app's HTML pane (html-view.mjs):
+     the platform's sans, then the bundled emoji face the canvas draws with
+     too, so an emoji is never tofu where the device has none. */
+  --font-sans: system-ui, -apple-system, "Segoe UI", sans-serif, "quine-emoji";
+  font: 15px/1.4 var(--font-sans);
+}
+/* The Noto Color Emoji the Worker gives the canvas (worker.mjs addEmojiFont),
+   for DOM text. Megabytes, so fetched only when a glyph falls through to it;
+   the HTTP cache then shares it with the Worker's fetch. */
+@font-face {
+  font-family: "quine-emoji";
+  src: url("../generated/core/emoji.ttf") format("truetype");
+  font-display: swap;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; background: var(--bg); color: var(--text); }
+/* THE SAFE AREA: with viewport-fit=cover (index.html) an installed app draws
+   under a notch, rounded corners and the system bars; the page keeps its
+   content inside, and the background fills the rest. Zero elsewhere. */
+body { padding: env(safe-area-inset-top) env(safe-area-inset-right)
+                env(safe-area-inset-bottom) env(safe-area-inset-left); }
+button, input, select, textarea { font: inherit; color: inherit; }
+button {
+  background: var(--panel); border: 1px solid var(--line); border-radius: 6px;
+  padding: 6px 12px; cursor: pointer;
+}
+button:hover { border-color: var(--accent); }
+/* A link that acts like a button (the tile's Edit). */
+a.button { display: inline-block; background: var(--panel); border: 1px solid var(--line);
+  border-radius: 6px; padding: 6px 12px; color: var(--text); text-decoration: none; }
+a.button:hover { border-color: var(--accent); }
+button.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+button.danger { color: var(--danger); }
+a { color: var(--accent); }
+
+header.bar {
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 12px; border-bottom: 1px solid var(--line); background: var(--panel);
+}
+header.bar h1 { font-size: 16px; margin: 0; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* THE LAUNCHER: a grid of world tiles, one column on a phone. */
+main.launcher { padding: 16px; max-width: 960px; margin: 0 auto; }
+#worlds { list-style: none; padding: 0; margin: 16px 0; display: grid; gap: 12px;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
+.tile { background: var(--panel); border: 1px solid var(--line); border-radius: 8px;
+  display: flex; flex-direction: column; }
+.tile a.open { flex: 1; padding: 16px; color: var(--text); text-decoration: none; font-weight: 600;
+  overflow-wrap: anywhere; display: flex; flex-direction: column; gap: 8px; }
+.tile a.open:hover { color: var(--accent); }
+.tile img.preview { width: 100%; aspect-ratio: 16 / 10; object-fit: contain;
+  background: var(--line); border-radius: 4px; }
+.tile .actions { display: flex; gap: 6px; padding: 8px; border-top: 1px solid var(--line); }
+.notice { color: var(--muted); }
+.error { color: var(--danger); white-space: pre-wrap; }
+/* The world view's notices sit on the page edge, outside any padded main. */
+#world-view > .error, #world-view > .notice { margin: 8px 12px; }
+dialog { background: var(--panel); color: var(--text); border: 1px solid var(--line);
+  border-radius: 8px; max-width: 420px; }
+dialog h2 { font-size: 16px; margin: 0 0 8px; overflow-wrap: anywhere; }
+dialog .actions { display: flex; gap: 8px; justify-content: flex-end; }
+#new-dialog input { display: block; width: 100%; margin: 4px 0 12px; background: var(--bg);
+  border: 1px solid var(--line); border-radius: 6px; padding: 6px 10px; }
+
+/* THE WORLD VIEW: full screen, the canvas takes whatever the chrome leaves.
+   In Launch (world-view.mjs) there is no chrome: the picture takes the page, and
+   only an error still shows. */
+body.world[data-mode=launch] :is(#resident-state, #turn, #conversation, #status, #status-corner, form#chat) {
+  display: none; }
+/* One page: an open app hides the tiles (launcher.mjs). */
+body.world > #launcher { display: none; }
+body.world { height: 100dvh; }
+body.world { overflow: hidden; }
+#world-view { display: flex; flex-direction: column; height: 100%; overflow: hidden; }
+#picture { flex: 1; min-height: 0; position: relative; }
+/* THE APP'S HTML BOX: the app's shadow root lives inside it. `contain: paint`
+   makes it the containing block of everything the app positions, fixed
+   included, and clips it there, so nothing the app draws or styles can cover
+   the chrome outside the picture. The canvas stays laid out beneath it (its
+   box is what the world is told), only unseen. */
+/* THE APP'S SURFACE holds the canvas and the app box and takes the keyboard
+   focus, unmarked as the canvas's always was: the app draws its own focus. */
+#surface { position: absolute; inset: 0; outline: none; }
+#app-box { position: absolute; inset: 0; contain: paint; overflow: hidden; }
+#app-box[hidden] { display: none; }
+#app { width: 100%; height: 100%; overflow: auto; }
+/* Offers sit over the picture in shell chrome, never in the app's content. */
+#port-offer, #repair-offer { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+  max-width: 24rem; padding: 16px; background: var(--panel); color: var(--text);
+  border: 1px solid var(--line); border-radius: 6px; }
+#port-offer[hidden], #repair-offer[hidden] { display: none; }
+#port-offer .actions, #repair-offer .actions { display: flex; gap: 8px; justify-content: flex-end; }
+#picture[data-html="1"] canvas { visibility: hidden; }
+#picture canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block;
+  outline: none; touch-action: none; }
+
+/* THE CONVERSATION, STATUS AND INPUT: the page's own chrome below the picture.
+   Reserve the expanded pane from the first frame, independent of transcript
+   length. Its preferred 35dvh can shrink when other chrome needs the space. */
+#conversation { height: calc(35dvh + 1px); min-height: 0; border-top: 1px solid var(--line); background: var(--panel); }
+#world-view[data-conversation=collapsed] #conversation { display: none; }
+#conversation-lines { height: 100%; overflow-y: auto; padding: 6px 12px; }
+/* The transcript is monospace, as on GTK: code, tool calls and aligned
+   output read as written. ONE SIZE for every kind: colour, not size, tells
+   them apart, so a reply and the tool call under it line up. */
+#conversation-lines .line { white-space: pre-wrap; overflow-wrap: anywhere; margin: 2px 0;
+  font: 13px/1.4 ui-monospace, monospace; }
+#conversation-lines .line[data-kind=user] { color: var(--accent); }
+#conversation-lines .line[data-kind=tool-call],
+#conversation-lines .line[data-kind=tool-result],
+#conversation-lines .line[data-kind=note] { color: var(--muted); }
+#conversation-lines .line[data-kind=error] { color: var(--danger); }
+/* As tall as Stop whether a turn runs or not (it is hidden, never removed):
+   the picture never resizes. */
+#turn { display: flex; align-items: center; gap: 12px; padding: 2px 12px;
+  font-size: 13px; color: var(--muted); border-top: 1px solid var(--line); white-space: nowrap; }
+#turn-text { flex: 1; overflow: hidden; text-overflow: ellipsis; }
+#stop { padding: 2px 10px; }
+#turn-spinner { flex: none; width: 12px; height: 12px; border-radius: 50%;
+  border: 2px solid var(--line); border-top-color: var(--accent);
+  animation: turn-spin 0.8s linear infinite; }
+@keyframes turn-spin { to { transform: rotate(360deg); } }
+#turn { cursor: pointer; user-select: none; }
+#conversation-caret { padding: 0 6px; font-size: 16px; }
+#world-view[data-status-line=hidden] #status { display: none; }
+#status { display: flex; gap: 12px; margin: 0; padding: 2px 12px; font-size: 12px;
+  color: var(--muted); border-top: 1px solid var(--line); white-space: nowrap; overflow: hidden; }
+#status-line { flex: 1; overflow: hidden; text-overflow: ellipsis; }
+/* Native host chrome: no app layout, canvas paint or hit target changes. */
+#status-corner { position: absolute; top: 4px; right: 4px; z-index: 2;
+  padding: 2px 4px; font: 12px monospace; color: var(--muted); background: var(--panel);
+  pointer-events: none; }
+#status-corner[hidden] { display: none; }
+#photo-chip { color: var(--accent); }
+form#chat { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 8px 12px;
+  border-top: 1px solid var(--line); }
+/* The composer's own notice (a refused permission, a busy device): a line
+   of its own above the row. */
+#composer-notice { flex-basis: 100%; margin: 0; }
+/* The composer swaps its parts with `hidden`, which a display rule above
+   would otherwise override. */
+form#chat [hidden] { display: none; }
+/* THE RECORDING BAR (chat-input.mjs), in the field's place while 🎙 is in use. */
+#recording-bar { flex: 1; display: flex; align-items: center; gap: 10px; padding: 6px 10px;
+  background: var(--panel); border: 1px solid var(--line); border-radius: 6px; }
+#recording-dot { color: var(--danger); animation: recording-blink 1.2s ease-in-out infinite; }
+@keyframes recording-blink { 50% { opacity: 0.2; } }
+#recording-hint { flex: 1; color: var(--muted); text-align: center; }
+#mic-slot { position: relative; display: inline-flex; }
+#mic { touch-action: none; user-select: none; -webkit-user-select: none; }
+#mic.recording { transform: scale(1.3); background: var(--danger); color: #fff; }
+/* Slide up to here to lock the recording. */
+#voice-lock { position: absolute; bottom: calc(100% + 18px); left: 50%; transform: translateX(-50%);
+  color: var(--muted); pointer-events: none; }
+#camera-preview { display: block; max-width: 100%; max-height: 70vh; background: #000; }
+#chat-input { flex: 1; min-width: 0; resize: none; background: var(--panel); border: 1px solid var(--line);
+  /* Eight text lines plus this field's 12px padding and 2px border. */
+  max-height: calc(8lh + 14px); overflow-y: auto;
+  border-radius: 6px; padding: 6px 10px; }
+
+/* SETTINGS */
+main.settings { padding: 16px; max-width: 640px; margin: 0 auto; }
+main.settings section { margin-bottom: 20px; }
+main.settings h2 { font-size: 15px; margin: 0 0 6px; }
+main.settings input, main.settings select { display: block; width: 100%; margin: 4px 0;
+  background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 6px 10px; }
+main.settings label { display: block; margin: 8px 0; color: var(--muted); }
+main.settings details summary { cursor: pointer; color: var(--muted); margin: 8px 0; }
+main.settings .ai-status { font-weight: 600; margin: 4px 0 8px; }
+main.settings fieldset.provider { border: 1px solid var(--line); border-radius: 8px; margin: 8px 0;
+  padding: 8px 12px; }
+main.settings fieldset.provider legend { font-weight: 600; padding: 0 4px; }
+main.settings h3 { font-size: 13px; margin: 8px 0 4px; color: var(--muted); font-weight: normal; }
+main.settings label.switch { display: flex; gap: 8px; align-items: center; color: var(--text); }
+main.settings label.switch input { display: inline; width: auto; margin: 0; }
+/* The Build row reads as a row, not a call to action; it is still a button,
+   so it is reachable and announced. */
+main.settings button.build-row { display: flex; flex-direction: column; align-items: flex-start;
+  width: 100%; text-align: left; background: none; border: none; padding: 4px 0;
+  user-select: none; -webkit-touch-callout: none; }
+main.settings .save-row { display: flex; gap: 12px; align-items: center; }

@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'wasm-unsafe-eval'; worker-src 'self' blob:; style-src 'self'; font-src 'self'; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https: http://localhost:* http://127.0.0.1:*; base-uri 'none'; form-action 'none'; object-src 'none'; manifest-src 'self'" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, interactive-widget=resizes-content, viewport-fit=cover" />
+    <title>Quine</title>
+    <link rel="stylesheet" href="app/style.css" />
+    <!-- The installable app (service-worker.js, app/sw-gate.mjs); the
+         icons are rendered from branding/app-icon.svg (nix/app-icon.nix). -->
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="icon" href="generated/icons/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="generated/icons/favicon.ico" sizes="16x16 32x32 48x48" />
+    <link rel="apple-touch-icon" href="generated/icons/apple-touch-icon.png" />
+  </head>
+  <body>
+    <!-- THE TILES. An open app (world-view.mjs) is mounted beside this and
+         hides it (body.world): one page, launcher.mjs routes. -->
+    <div id="launcher">
+      <header class="bar">
+        <h1>Quine</h1>
+        <button type="button" id="import">Import…</button>
+        <input type="file" id="import-file" accept=".quine" hidden />
+        <a href="settings.html" id="settings-link">Settings</a>
+        <button type="button" id="new-app" class="primary" title="New app" aria-label="New app">+</button>
+      </header>
+      <main class="launcher">
+        <!-- Shown while app/sw-gate.mjs waits for the offline app (a first
+             visit downloads it whole); the gate removes it as the app starts. -->
+        <p class="notice" id="preparing">Preparing offline app…</p>
+        <p class="error" id="apps-error" hidden></p>
+        <p class="notice" id="empty" hidden>No apps yet. Press + to make one.</p>
+        <ul id="worlds" aria-label="apps"></ul>
+      </main>
+    </div>
+    <!-- NEW APP, as on every shell: + asks the name here. Enter or Create
+         makes the app and opens it in Edit; Escape or Cancel closes. A name
+         the catalog refuses is said here, and what was typed stays. -->
+    <dialog id="new-dialog">
+      <form id="new-world">
+        <h2>New app</h2>
+        <input id="new-name" name="name" placeholder="Name of the new app" maxlength="60" />
+        <p class="error" id="new-error" hidden></p>
+        <div class="actions">
+          <button type="button" id="new-cancel">Cancel</button>
+          <button class="primary" type="submit">Create</button>
+        </div>
+      </form>
+    </dialog>
+    <!-- THE TRUST PROMPT: an app carries its own program. Cancel is the
+         default, so Return alone never imports a stranger's file. A file of
+         an app already here adds one Replace per candidate
+         (app/launcher.mjs). -->
+    <dialog id="import-dialog">
+      <form method="dialog">
+        <h2 id="import-title"></h2>
+        <p id="import-detail"></p>
+        <div class="actions">
+          <button value="cancel" id="import-cancel" autofocus>Cancel</button>
+          <button value="import" id="import-confirm" class="primary">Import</button>
+          <span id="import-replace"></span>
+        </div>
+      </form>
+    </dialog>
+    <script type="module" src="app/sw-gate.mjs" data-entry="launcher.mjs"></script>
+  </body>
+</html>
