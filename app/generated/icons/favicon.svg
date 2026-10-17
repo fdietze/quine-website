@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="170.667 170.667 682.667 682.667">
+  <!-- THE APP ICON, the one source every icon is rendered from (nix/app-icon.nix).
+       The canvas is Android's adaptive-icon layer: 1024 units = 108 dp. A
+       launcher shows the centre 72 dp (the square 170.67..853.33) and keeps
+       the glyph whole inside the 66 dp safe circle (radius 312.9 around the
+       centre); the glyph reaches radius 265, so it also fits the web's
+       maskable safe zone (radius 40% of the icon) of that 72 dp crop.
+       Three addressable layers, full bleed, nothing baked (no mask shape, no
+       shadow - the platform adds its own):
+         #background  the gradient
+         #foreground  the glyph in colour
+         #monochrome  the glyph in one colour for themed icons: the outer tile
+                      with the middle tile cut out, plus the inner tile. Hidden
+                      here; the build shows it with a stylesheet.
+       The tiles are defined once and used by both glyph layers (DRY). -->
+  <defs>
+    <linearGradient id="background-gradient" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#6D7BFF"/>
+      <stop offset="1" stop-color="#7C3AED"/>
+    </linearGradient>
+    <rect id="outer-tile" x="292" y="292" width="440" height="440" rx="112"/>
+    <rect id="middle-tile" x="384" y="384" width="256" height="256" rx="64" transform="rotate(12 512 512)"/>
+    <rect id="inner-tile" x="452" y="452" width="120" height="120" rx="30" transform="rotate(24 512 512)"/>
+    <mask id="middle-tile-hole">
+      <rect width="1024" height="1024" fill="#FFFFFF"/>
+      <use xlink:href="#middle-tile" fill="#000000"/>
+    </mask>
+  </defs>
+  <g id="background">
+    <rect width="1024" height="1024" fill="url(#background-gradient)"/>
+  </g>
+  <g id="foreground">
+    <use xlink:href="#outer-tile" fill="#FFFFFF"/>
+    <use xlink:href="#middle-tile" fill="#5B32D6"/>
+    <use xlink:href="#inner-tile" fill="#FFFFFF"/>
+  </g>
+  <g id="monochrome" display="none">
+    <use xlink:href="#outer-tile" fill="#FFFFFF" mask="url(#middle-tile-hole)"/>
+    <use xlink:href="#inner-tile" fill="#FFFFFF"/>
+  </g>
+</svg>

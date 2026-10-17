@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <!-- Trust boundary: the owner explicitly accepts that the EmailOctopus
+       embed and its reCAPTCHA scripts can access the Browser app's same-origin
+       storage. .mex/context/security.md records this exception; the CSP names
+       only this form and its dependencies, not arbitrary script origins. -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src https://eocampaign1.com/form/70ed5f8c-c665-11f1-b826-97a61b184d34.js https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com https://gallery.eo.page/fonts/; img-src 'self' data: https://discord.com/api/guilds/1557921638270640168/widget.png https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/ https://gallery.eo.page/tentacles/icons/v1/powered-by/otto-branded.svg; connect-src https://eocampaign1.com/form/70ed5f8c-c665-11f1-b826-97a61b184d34 https://www.google.com/recaptcha/; frame-src https://www.google.com/recaptcha/ https://recaptcha.google.com/recaptcha/; base-uri 'none'; form-action 'none'">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Apps and games made with quine. Create with AI and change apps while using them. Available for Android and in your browser.">
+  <meta name="theme-color" content="#111214">
+  <title>quine — apps and games</title>
+  <link rel="icon" href="assets/quine.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="landing.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="page">
+    <header class="header">
+      <a class="brand" href="./" aria-label="quine home">
+        <img src="assets/quine.svg" alt="" width="36" height="36">
+        <span>quine</span>
+      </a>
+      <a class="community-link" href="https://discord.com/invite/FJv8k2uP" referrerpolicy="no-referrer">
+        <span>Join the community <span aria-hidden="true">↗</span></span>
+        <img src="https://discord.com/api/guilds/1557921638270640168/widget.png?style=shield" alt="Discord online member count" width="119" height="20" referrerpolicy="no-referrer">
+      </a>
+    </header>
+
+    <main id="main">
+      <section class="examples" aria-labelledby="examples-title" aria-roledescription="carousel">
+        <div class="examples-heading">
+          <h1 id="examples-title">Apps made with quine</h1>
+          <span class="beta">Beta</span>
+        </div>
+        <!-- KISS: native scroll snap supports touch, trackpads and keyboard;
+             category links reach every example without a carousel controller. -->
+        <ul class="example-track" tabindex="0" aria-label="App examples. Swipe, scroll, or use the example links below." role="list">
+          <li class="example" id="example-snake" aria-labelledby="snake-title">
+            <blockquote class="prompt">Make a Snake game I can steer by swiping.</blockquote>
+            <figure>
+              <div class="screen"><img data-capture="snake" src="assets/screenshots/snake.png" alt="Snake game alongside the AI conversation for changing it" width="1080" height="1920" fetchpriority="high"></div>
+              <figcaption id="snake-title">Simple game</figcaption>
+            </figure>
+          </li>
+          <li class="example" id="example-groceries" aria-labelledby="groceries-title">
+            <blockquote class="prompt">Make a grocery list, grouped by aisle, with checkboxes.</blockquote>
+            <figure>
+              <div class="screen"><img data-capture="groceries" src="assets/screenshots/groceries.png" alt="Grocery list built with native Android Material controls" width="1080" height="1920"></div>
+              <figcaption id="groceries-title">Native Android</figcaption>
+            </figure>
+          </li>
+          <li class="example" id="example-bubbles" aria-labelledby="bubbles-title">
+            <blockquote class="prompt">Make a colourful game from my sketch.</blockquote>
+            <figure>
+              <div class="screen"><img data-capture="bubbles" src="assets/screenshots/bubbles.png" alt="A colourful 2D game made from a photographed sketch" width="1080" height="1920" loading="lazy"></div>
+              <figcaption id="bubbles-title">2D · From a sketch</figcaption>
+            </figure>
+          </li>
+          <li class="example" id="example-beats" aria-labelledby="beats-title">
+            <blockquote class="prompt">Make a drum machine with a 16-step sequencer.</blockquote>
+            <figure>
+              <div class="screen"><img data-capture="beats" src="assets/screenshots/beats.png" alt="Drum machine with a step sequencer and tempo controls" width="1080" height="1920" loading="lazy"></div>
+              <figcaption id="beats-title">Music</figcaption>
+            </figure>
+          </li>
+        </ul>
+        <nav class="example-links" aria-label="Choose an example">
+          <a href="#example-snake">Simple game</a>
+          <a href="#example-groceries">Native Android</a>
+          <a href="#example-bubbles">2D</a>
+          <a href="#example-beats">Music</a>
+        </nav>
+        <p class="example-note">Android screenshots. Prompts shortened for display.</p>
+      </section>
+
+      <section class="section try" aria-labelledby="try-title">
+        <div>
+          <h2 id="try-title">Try quine</h2>
+          <p class="description">Describe an app or send a sketch. Use it, then ask for changes—even during a game. No restart needed.</p>
+        </div>
+        <div>
+          <div class="download-actions">
+            <a class="browser-badge" href="https://quine.felx.me/app/">
+              <svg viewBox="0 0 24 24" width="27" height="27" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="12" r="9"/><ellipse cx="12" cy="12" rx="4" ry="9"/><path d="M3 12h18M5 6h14M5 18h14"/></svg>
+              <span><small>Try it in your</small><strong>Browser</strong></span>
+            </a>
+            <a class="play-badge" href="https://play.google.com/store/apps/details?id=dev.quine.shell">
+              <img src="assets/google-play.png" alt="Get it on Google Play" width="646" height="250">
+            </a>
+          </div>
+          <p class="cost-note">Quine has no subscription. AI requires an <a href="https://openrouter.ai/">OpenRouter</a> account; you pay for usage.</p>
+        </div>
+      </section>
+
+      <section class="section platforms" aria-labelledby="platforms-title">
+        <div class="section-heading">
+          <h2 id="platforms-title">Other platforms</h2>
+          <p>Native iOS, Mac and Windows apps are planned.</p>
+        </div>
+        <ul class="platform-list" aria-label="Planned native apps">
+          <li class="platform"><img class="apple-mark" src="assets/apple.svg" alt="" width="26" height="26"><span>iOS</span></li>
+          <li class="platform"><img class="apple-mark" src="assets/apple.svg" alt="" width="26" height="26"><span>Mac</span></li>
+          <li class="platform"><img src="assets/windows.svg" alt="" width="26" height="26"><span>Windows</span></li>
+        </ul>
+      </section>
+
+      <section class="section updates" id="updates" aria-labelledby="updates-title">
+        <div><h2 id="updates-title">Email updates</h2><p class="description">Releases and new examples.</p></div>
+        <div class="newsletter">
+          <script async src="https://eocampaign1.com/form/70ed5f8c-c665-11f1-b826-97a61b184d34.js" data-form="70ed5f8c-c665-11f1-b826-97a61b184d34"></script>
+          <noscript>Enable JavaScript to subscribe to email updates.</noscript>
+          <p class="signup-privacy">Signup is handled by EmailOctopus and protected by Google reCAPTCHA. See our <a href="privacy.html#email-updates">privacy policy</a>, Google's <a href="https://policies.google.com/privacy" referrerpolicy="no-referrer">Privacy Policy</a> and <a href="https://policies.google.com/terms" referrerpolicy="no-referrer">Terms of Service</a>.</p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <span class="copyright">© 2026 Felix Dietze</span>
+      <div class="footer-links"><a href="https://discord.com/invite/FJv8k2uP" referrerpolicy="no-referrer">Discord</a><a href="privacy.html">Privacy</a></div>
+    </footer>
+  </div>
+</body>
+</html>
